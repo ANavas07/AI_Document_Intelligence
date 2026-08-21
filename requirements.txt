@@ -10,6 +10,7 @@ pdfplumber
 # Rag and LLM pipeline
 langchain
 langchain-openai
+langchain-google-genai
 chromadb
 
 # API Layer
