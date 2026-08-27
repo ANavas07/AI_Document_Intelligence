@@ -6,10 +6,10 @@ COLLECTION_NAME = "claim_document_chunks"
 
 # Create embedding client
 def create_embedding_client(settings:AppSettings):
-    from langchain_google_genai import GoogleGenerativeAIEmbeddings
-    return GoogleGenerativeAIEmbeddings(
-        model=settings.embedding_model,
-        api_key=settings.ai_api_key
+    from langchain_huggingface import HuggingFaceEmbeddings
+    return HuggingFaceEmbeddings(
+        model_name=settings.embedding_model,
+        encode_kwargs={"normalize_embeddings": True},
     )
 
 # Create or load a persistant chroma db collection
@@ -82,7 +82,7 @@ def build_vector_store(settings:AppSettings, chunks:list[str]) -> bool:
     return True
 
 # Searching vector store
-def search_vector_store(settings:AppSettings, query:str,top_k:int= 3) -> list[dict]:
+def search_vector_store(settings:AppSettings, query:str,top_k:int= 3, claim_id:str | None= None) -> list[dict]:
     if not validate_ai_settings(settings):
         print("AI_API_KEY is not set. Skipping Vector search.")
         return False
@@ -90,9 +90,11 @@ def search_vector_store(settings:AppSettings, query:str,top_k:int= 3) -> list[di
     embedding_client = create_embedding_client(settings)
     collection = create_chroma_collection(settings.processed_data_dir)
     query_embedding = embedding_client.embed_query(query)
+    where_filter = {"claim_id": claim_id} if claim_id else None
     results = collection.query(
         query_embeddings=[query_embedding],
         n_results=top_k,
+        where = where_filter,
         include=["documents", "metadatas", "distances"]   
     )
     retrieved_chunks = []

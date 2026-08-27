@@ -14,6 +14,7 @@ class AppSettings:
     embedding_model: str
     chat_model: str
     retrieval_distance_threshold: float
+    ai_url: str | None
 
 # Load AppSettings
 def load_settings() -> AppSettings:
@@ -26,11 +27,12 @@ def load_settings() -> AppSettings:
         processed_data_dir=project_root / "data" / "processed",
         output_data_dir=project_root / "data" / "output",
         ai_api_key=os.getenv("AI_API_KEY"),
-        embedding_model=os.getenv("AI_EMBEDDING_MODEL", "gemini-embedding-2"),
-        chat_model=os.getenv("AI_CHAT_MODEL", "gemini-3.1-flash-lite"),
+        embedding_model=os.getenv("AI_EMBEDDING_MODEL", "google/embeddinggemma-300m"),
+        chat_model=os.getenv("AI_CHAT_MODEL", "Qwen3.5-4B"),
         retrieval_distance_threshold=float(
             os.getenv("RETRIEVAL_DISTANCE_THRESHOLD", "1.25")
-        )
+        ),
+        ai_url =os.getenv("AI_URL")
     )
 
 # Validate Open AI Settings
