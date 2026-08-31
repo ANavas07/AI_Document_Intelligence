@@ -1,1 +1,22 @@
+htmlcov
+
+#Environment and vritual environment
+.venv
 .env
+.env.*
+!.env.example
+
+# Local data and generated outputs
+# data/raw
+data/processed/*
+data/output/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/output/.gitkeep
+
+# Vector stores and local databases
+chroma/
+chroma_db/
+vector_store/
+*.sqlite3
+*.db
