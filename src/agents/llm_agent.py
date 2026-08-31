@@ -519,6 +519,7 @@ def select_tool_with_llm(settings: AppSettings, user_request: str) -> dict:
 
     chat_model = ChatOpenAI(
         model=settings.chat_model,
+        base_url=settings.ai_url,
         api_key=settings.ai_api_key,
         temperature=0,
     )
@@ -670,6 +671,7 @@ def generate_final_answer(
 
     chat_model = ChatOpenAI(
         model=settings.chat_model,
+        base_url=settings.ai_url,
         api_key=settings.ai_api_key,
         temperature=0,
     )
